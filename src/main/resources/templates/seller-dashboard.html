@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seller Dashboard - E-Commerce Marketplace</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+:root {
+    --primary-color: #232f3e;
+    --accent-color: #ff9900;
+}
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: #f8f9fa;
+}
+.navbar-brand {
+    font-weight: 700;
+    color: var(--primary-color) !important;
+}
+.seller-name {
+    font-weight: 600;
+    color: var(--primary-color);
+}
+.summary-card {
+    background: white;
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    transition: 0.3s;
+}
+.summary-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+}
+.summary-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+}
+.stat-number {
+    font-size: 2rem;
+    font-weight: 700;
+}
+.stat-label {
+    font-size: 0.875rem;
+    color: #6c757d;
+}
+.table-container {
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    overflow: hidden;
+}
+.table thead th {
+    background: var(--primary-color);
+    color: white;
+    padding: 1rem;
+}
+.status-badge {
+    font-size: 0.75rem;
+    padding: 0.5rem 0.75rem;
+    border-radius: 20px;
+}
+.price {
+    font-weight: 600;
+}
+</style>
+</head>
+
+<body>
+
+<!-- ================= NAVBAR ================= -->
+<nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm sticky-top">
+    <div class="container-fluid">
+
+        <a class="navbar-brand d-flex align-items-center gap-2" href="#">
+            <i class="bi bi-shop-window text-primary fs-4"></i>
+            Seller Central
+        </a>
+
+        <div class="navbar-nav ms-auto">
+            <div class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle d-flex align-items-center gap-2 seller-name"
+                   href="#" role="button" data-bs-toggle="dropdown">
+
+                    <img src="https://via.placeholder.com/32x32/232f3e/ffffff?text=SA"
+                         class="rounded-circle" width="32" height="32">
+
+                    <span th:text="${seller.name}">Seller Name</span>
+                </a>
+
+                <ul class="dropdown-menu dropdown-menu-end shadow-sm">
+
+                    <li>
+                        <a class="dropdown-item" th:href="@{/seller-api/profile}">
+                            <i class="bi bi-person-circle me-2"></i>Profile
+                        </a>
+                    </li>
+
+                    <li>
+                        <a class="dropdown-item" th:href="@{/seller-api/manage-seller-products}">
+                            <i class="bi bi-gear me-2"></i>Manage Products
+                        </a>
+                    </li>
+
+                    <li><hr class="dropdown-divider"></li>
+
+                    <li>
+                        <a class="dropdown-item text-danger" th:href="@{/logout}">
+                            <i class="bi bi-box-arrow-right me-2"></i>Logout
+                        </a>
+                    </li>
+
+                </ul>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<!-- ================= CONTENT ================= -->
+<div class="container-fluid px-4 py-4">
+
+<!-- Header -->
+<div class="row mb-5 align-items-center">
+    <div class="col-md-6">
+        <h2 class="fw-bold">Dashboard Overview</h2>
+        <p class="text-muted">Welcome back! Here's what's happening with your store.</p>
+    </div>
+
+    <div class="col-md-6 text-md-end mt-3 mt-md-0">
+        <a th:href="@{/seller-api/manage-seller-products}"
+           class="btn btn-primary rounded-pill px-4 me-2">
+            <i class="bi bi-gear"></i> Manage Products
+        </a>
+
+       <!-- <a th:href="@{/seller-api/add-products-form}"
+           class="btn btn-success rounded-pill px-4">
+            <i class="bi bi-plus-lg"></i> Add Product
+        </a>-->
+    </div>
+</div>
+
+<!-- Summary Cards -->
+<div class="row mb-5 g-4">
+
+    <div class="col-md-4">
+        <div class="summary-card">
+            <div class="summary-icon bg-primary bg-opacity-10 text-primary">
+                <i class="bi bi-grid-3x3-gap"></i>
+            </div>
+            <div class="stat-number" th:text="${totalProduct}">0</div>
+            <div class="stat-label">Total Products</div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="summary-card">
+            <div class="summary-icon bg-success bg-opacity-10 text-success">
+                <i class="bi bi-cart-check"></i>
+            </div>
+            <div class="stat-number" th:text="${totalOrders}">0</div>
+            <div class="stat-label">Total Orders</div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="summary-card">
+            <div class="summary-icon bg-warning bg-opacity-10 text-warning">
+                <i class="bi bi-currency-dollar"></i>
+            </div>
+            <div class="stat-number price"
+                 th:text="'$' + ${#numbers.formatDecimal(totalRevenue, 0, 2)}">
+                 $0.00
+            </div>
+            <div class="stat-label">Total Revenue</div>
+        </div>
+    </div>
+
+</div>
+
+<!-- Tables Section -->
+<div class="row g-4">
+
+<!-- Products Table -->
+<div class="col-lg-8">
+<div class="table-container">
+
+<div class="p-4 border-bottom">
+<h5 class="fw-bold mb-0">
+<i class="bi bi-grid-3x3-gap text-primary"></i> Your Products
+</h5>
+</div>
+
+<div class="table-responsive">
+<table class="table mb-0">
+
+<thead>
+<tr>
+<th>Product Name</th>
+<th>Status</th>
+<th class="text-end">Price</th>
+<th class="text-end">Stock</th>
+</tr>
+</thead>
+
+<tbody>
+
+<tr th:each="product : ${productList}"
+    th:classappend="${product.active == 0} ? 'table-secondary opacity-50'">
+
+<td>
+<div class="fw-semibold" th:text="${product.productName}">Product</div>
+<small class="text-muted"
+       th:text="'ID: ' + ${product.productId}">ID</small>
+</td>
+
+<td>
+<span th:if="${product.active}"
+      class="badge bg-success rounded-pill">Active</span>
+<span th:if="${!product.active}"
+      class="badge bg-danger rounded-pill">Disabled</span>
+</td>
+
+<td class="text-end price"
+    th:text="'$' + ${#numbers.formatDecimal(product.price, 0, 2)}">$0.00</td>
+
+<td class="text-end">
+<span class="badge bg-light text-dark rounded-pill"
+      th:text="${product.stock} + ' in stock'">10 in stock</span>
+</td>
+
+</tr>
+
+<tr th:if="${productList.isEmpty()}">
+<td colspan="4" class="text-center py-4 text-muted">
+No products found
+</td>
+</tr>
+
+</tbody>
+</table>
+</div>
+</div>
+</div>
+
+<!-- Orders Table -->
+<div class="col-lg-4">
+<div class="table-container">
+
+<div class="p-4 border-bottom">
+<h5 class="fw-bold mb-0">
+<i class="bi bi-clock-history text-warning"></i>  Orders
+</h5>
+</div>
+
+<div class="table-responsive">
+<table class="table mb-0">
+
+<thead>
+<tr>
+<th>Order ID</th>
+<th>Status</th>
+<th></th>
+</tr>
+</thead>
+
+<tbody>
+<tr th:each="order : ${ordersList}">
+    <td>
+        <div class="fw-semibold" th:text="'#' + ${order.orderId}">#123</div>
+        <small class="text-muted"
+               th:text="${#temporals.format(order.orderDate, 'dd-MM-yyyy')}">
+        </small>
+    </td>
+
+    <td>
+        <span class="status-badge bg-light text-dark"
+              th:text="${order.status}">
+            PLACED
+        </span>
+    </td>
+
+    <td class="text-end">
+        <a th:href="@{/seller-api/view-orders/{id}(id=${order.orderId})}"
+           class="btn btn-sm btn-outline-primary rounded-pill">
+            <i class="bi bi-eye"></i>
+        </a>
+    </td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

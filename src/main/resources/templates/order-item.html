@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Order Items</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    font-family:'Segoe UI', sans-serif;
+    background:linear-gradient(to right,#eef2ff,#f8fafc);
+    padding:40px;
+    color:#1e293b;
+}
+
+/* Container */
+.container{
+    max-width:1000px;
+    margin:auto;
+    display:flex;
+    flex-direction:column;
+    gap:25px;
+}
+
+/* Title */
+.page-title{
+    font-size:1.5rem;
+    font-weight:600;
+    border-left:4px solid #4f46e5;
+    padding-left:12px;
+}
+
+/* Card */
+.card{
+    background:white;
+    border-radius:14px;
+    padding:25px;
+    box-shadow:0 10px 25px rgba(0,0,0,0.06);
+}
+
+/* Table */
+table{
+    width:100%;
+    border-collapse:collapse;
+}
+
+th{
+    background:#111827;
+    color:white;
+    padding:14px;
+    font-size:0.85rem;
+    text-transform:uppercase;
+    letter-spacing:0.5px;
+}
+
+td{
+    padding:16px;
+    border-bottom:1px solid #e5e7eb;
+    font-size:0.95rem;
+}
+
+tr:hover{
+    background:#f8fafc;
+}
+
+/* Index badge */
+
+/* Price styling */
+.price{
+    font-weight:600;
+}
+
+.total{
+    font-weight:700;
+    color:#16a34a;
+}
+
+/* Empty State */
+.empty{
+    text-align:center;
+    padding:50px;
+    background:white;
+    border-radius:14px;
+    box-shadow:0 8px 20px rgba(0,0,0,0.05);
+    color:#64748b;
+    font-size:1rem;
+}
+
+/* Responsive */
+@media(max-width:768px){
+    body{
+        padding:20px;
+    }
+
+    th, td{
+        padding:10px;
+        font-size:0.85rem;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="page-title">Order Items</div>
+
+    <!-- If items exist -->
+    <div class="card" th:if="${items != null and !items.isEmpty()}">
+        <table>
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Product Name</th>
+                    <th>Quantity</th>
+                    <th>Price (₹)</th>
+                    <th>Total (₹)</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr th:each="item, stat : ${items}">
+                    <td>
+                        <span class="index-badge"
+                              th:text="${stat.count}">1</span>
+                    </td>
+
+                    <td th:text="${item.productName}">
+                        Product Name
+                    </td>
+
+                    <td th:text="${item.quantity}">
+                        1
+                    </td>
+
+                    <td class="price"
+                        th:text="${#numbers.formatDecimal(item.price,1,2)}">
+                        100
+                    </td>
+
+                    <td class="total"
+                        th:text="${#numbers.formatDecimal(item.quantity * item.price,1,2)}">
+                        100
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- If no items -->
+    <div class="empty"
+         th:if="${items == null or items.isEmpty()}">
+        No items found for this order 📦
+    </div>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>User Dashboard</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    font-family:'Segoe UI', sans-serif;
+    background:linear-gradient(to right,#eef2ff,#f8fafc);
+    min-height:100vh;
+    padding:30px;
+    color:#1e293b;
+}
+
+/* Main Wrapper */
+.container{
+    max-width:1150px;
+    margin:auto;
+    display:flex;
+    flex-direction:column;
+    gap:30px;
+}
+
+/* Top Profile Banner */
+.profile-banner{
+    background:white;
+    border-radius:15px;
+    padding:35px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    box-shadow:0 10px 30px rgba(0,0,0,0.06);
+}
+
+.profile-left{
+    display:flex;
+    align-items:center;
+    gap:20px;
+}
+
+.avatar{
+    width:80px;
+    height:80px;
+    border-radius:50%;
+    background:#4f46e5;
+    color:white;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:28px;
+    font-weight:600;
+}
+
+.profile-info h2{
+    font-size:1.6rem;
+    margin-bottom:6px;
+}
+
+.profile-info p{
+    color:#64748b;
+    font-size:0.95rem;
+}
+
+/* Quick Actions */
+.quick-actions{
+    display:flex;
+    gap:15px;
+    flex-wrap:wrap;
+}
+
+.btn{
+    padding:10px 18px;
+    border-radius:8px;
+    text-decoration:none;
+    font-size:0.9rem;
+    font-weight:600;
+    color:white;
+    transition:0.3s;
+}
+
+.btn-primary{ background:#2563eb; }
+.btn-success{ background:#059669; }
+.btn-warning{ background:#d97706; }
+.btn-logout{ background:#dc2626; border:none; cursor:pointer; }
+
+.btn:hover{
+    transform:translateY(-2px);
+    opacity:0.9;
+}
+
+/* Section Card */
+.card{
+    background:white;
+    border-radius:15px;
+    padding:30px;
+    box-shadow:0 8px 25px rgba(0,0,0,0.05);
+}
+
+.section-title{
+    font-size:1.2rem;
+    font-weight:600;
+    margin-bottom:20px;
+    border-left:4px solid #4f46e5;
+    padding-left:10px;
+}
+
+/* Grid Layout */
+.grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:20px;
+}
+
+.info-box{
+    background:#f8fafc;
+    padding:18px;
+    border-radius:10px;
+    border:1px solid #e2e8f0;
+}
+
+.label{
+    font-size:0.75rem;
+    text-transform:uppercase;
+    color:#64748b;
+    margin-bottom:6px;
+    display:block;
+    font-weight:600;
+}
+
+.value{
+    font-size:1rem;
+    font-weight:600;
+    word-break:break-word;
+}
+
+/* Responsive */
+@media(max-width:768px){
+    .profile-banner{
+        flex-direction:column;
+        align-items:flex-start;
+        gap:20px;
+    }
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <!-- PROFILE HEADER -->
+    <div class="profile-banner">
+        <div class="profile-left">
+            <div class="avatar" th:text="${#strings.substring(User.name,0,1)}">U</div>
+            <div class="profile-info">
+                <h2 th:text="${User.name}">Nandha</h2>
+                <p th:text="${User.email}">nandha@email.com</p>
+            </div>
+        </div>
+
+        <div class="quick-actions">
+            <a th:href="@{/order-api/orders/{userid}(userid=${User.id})}" 
+               class="btn btn-primary">My Orders</a>
+
+            <a th:href="@{/user-address-api/manage-user-address}" 
+               class="btn btn-warning">Manage Address</a>
+
+            <a th:href="@{/user-api/edit-profile}" 
+               class="btn btn-success">Edit Profile</a>
+
+            <button th:onclick="'window.location.href=\'' + @{/logout} + '\''"
+                    class="btn btn-logout">Logout</button>
+        </div>
+    </div>
+
+    <!-- ACCOUNT INFORMATION -->
+    <div class="card">
+        <div class="section-title">Account Information</div>
+
+        <div class="grid">
+            <div class="info-box">
+                <span class="label">User ID</span>
+                <span class="value" th:text="${User.id}">1</span>
+            </div>
+
+            <div class="info-box">
+                <span class="label">Phone</span>
+                <span class="value" th:text="${User.Phone_Number}">+91-XXXXXXXXXX</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- ADDRESS SECTION -->
+    <div class="card">
+        <div class="section-title">Delivery Address</div>
+
+        <div class="grid">
+            <div class="info-box">
+                <span class="label">Street</span>
+                <span class="value" th:text="${User.UsersAddress.street}">Perundurai</span>
+            </div>
+
+            <div class="info-box">
+                <span class="label">City</span>
+                <span class="value" th:text="${User.UsersAddress.city}">Tamil Nadu</span>
+            </div>
+
+            <div class="info-box">
+                <span class="label">Pincode</span>
+                <span class="value" th:text="${User.UsersAddress.pincode}">638052</span>
+            </div>
+
+            <div class="info-box">
+                <span class="label">State</span>
+                <span class="value" th:text="${User.UsersAddress.state}">India</span>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>

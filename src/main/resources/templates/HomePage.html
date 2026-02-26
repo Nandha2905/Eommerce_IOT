@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E-Commerce - Nandha's Store</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Arial', sans-serif; line-height: 1.6; color: #333; }
+        
+        /* Header */
+        header { 
+            background: #f8f9fa; 
+            padding: 1rem 0; 
+            position: sticky; 
+            top: 0; 
+            z-index: 100;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        nav { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            max-width: 1200px; 
+            margin: 0 auto; 
+            padding: 0 2rem; 
+        }
+        .logo { font-size: 1.8rem; font-weight: bold; color: #3498db; }
+        .nav-links { 
+            display: flex; 
+            list-style: none; 
+            gap: 2rem; 
+            align-items: center; 
+        }
+        .nav-links a { 
+            color: #2c3e50; 
+            text-decoration: none; 
+            padding: 0.5rem 1rem; 
+            border-radius: 5px; 
+            transition: background 0.2s ease; 
+        }
+        .nav-links a:hover { background: #e9ecef; }
+        .auth-btn { 
+            background: #3498db; 
+            color: white; 
+            padding: 0.7rem 1.5rem; 
+            border-radius: 25px; 
+            font-weight: 500;
+            text-decoration: none;
+            margin-left: 1rem;
+            transition: background 0.2s ease;
+        }
+        .auth-btn:hover { background: #2980b9; }
+        
+        /* Hero */
+        .hero { 
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); 
+            height: 70vh; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            text-align: center; 
+            color: white; 
+        }
+        .hero h1 { font-size: 3.5rem; margin-bottom: 1rem; }
+        .hero p { font-size: 1.3rem; margin-bottom: 2rem; }
+        .cta { 
+            background: white; 
+            color: #3498db; 
+            padding: 1.2rem 3rem; 
+            border: none; 
+            border-radius: 50px; 
+            font-size: 1.1rem; 
+            cursor: pointer; 
+            text-decoration: none; 
+            display: inline-block;
+            font-weight: bold;
+            transition: all 0.2s ease;
+        }
+        .cta:hover { background: #f8f9fa; transform: translateY(-2px); }
+        
+        /* Featured Products */
+        .featured {
+            max-width: 1200px;
+            margin: 4rem auto;
+            padding: 0 2rem;
+        }
+        .featured h2 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-bottom: 3rem;
+            color: #2c3e50;
+        }
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+        .product-card {
+            background: white;
+            border-radius: 15px;
+            padding: 1.5rem;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: transform 0.2s ease;
+        }
+        .product-card:hover {
+            transform: translateY(-5px);
+        }
+        .product-image {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(45deg, #f8f9fa, #e9ecef);
+            border-radius: 10px;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            color: #bdc3c7;
+        }
+        .product-card h3 { font-size: 1.3rem; margin-bottom: 0.5rem; color: #2c3e50; }
+        .product-price { font-size: 1.5rem; font-weight: bold; color: #27ae60; margin-bottom: 1rem; }
+        .product-btn {
+            background: #3498db;
+            color: white;
+            padding: 0.8rem 2rem;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: background 0.2s ease;
+        }
+        .product-btn:hover { background: #2980b9; }
+        
+        /* Footer */
+        footer { 
+            background: #f8f9fa; 
+            color: #6c757d; 
+            padding: 3rem 0 1.5rem; 
+            margin-top: 4rem;
+        }
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+        .footer-section h3 { color: #2c3e50; margin-bottom: 1rem; }
+        .footer-section a { 
+            color: #6c757d; 
+            text-decoration: none; 
+            display: block; 
+            margin-bottom: 0.5rem;
+            transition: color 0.2s ease;
+        }
+        .footer-section a:hover { color: #3498db; }
+        .copyright {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid #dee2e6;
+            color: #6c757d;
+        }
+        
+        @media (max-width: 768px) {
+            .nav-links { gap: 1rem; flex-wrap: wrap; }
+            .hero h1 { font-size: 2.5rem; }
+            .featured h2 { font-size: 2rem; }
+        }
+    </style>
+</head>
+<body>
+    <!-- HEADER: Logo | Home | Products | Login | Register -->
+    <header>
+        <nav>
+            <div class="logo">E-Store</div>
+            <ul class="nav-links">
+                <li><a href="/home">Home</a></li>
+                <li><a href="/products">Products</a></li>
+                <a href="/login-api/login-form" class="auth-btn">Login</a>
+                <a href="/login-api/register-form" class="auth-btn">Register</a>
+            </ul>
+        </nav>
+    </header>
+
+       <section class="hero">
+        <div>
+            <h1>Welcome to E-Store</h1>
+            <p>Discover amazing products at unbeatable prices</p>
+            <a id="shop-now" class="cta">Shop Now</a>
+        </div>
+    </section>
+
+    <!-- FEATURED: Product Grid -->
+    <!--<section class="featured" id="products">
+        <h2>Featured Products</h2>
+        <div class="products-grid">
+            <div class="product-card">
+                <div class="product-image">📱</div>
+                <h3>Smartphone Pro</h3>
+                <div class="product-price">$599</div>
+                <button class="product-btn">Add to Cart</button>
+            </div>
+            <div class="product-card">
+                <div class="product-image">💻</div>
+                <h3>Laptop Ultra</h3>
+                <div class="product-price">$1299</div>
+                <button class="product-btn">Add to Cart</button>
+            </div>
+            <div class="product-card">
+                <div class="product-image">🎧</div>
+                <h3>Wireless Headphones</h3>
+                <div class="product-price">$199</div>
+                <button class="product-btn">Add to Cart</button>
+            </div>
+            <div class="product-card">
+                <div class="product-image">⌚</div>
+                <h3>Smart Watch</h3>
+                <div class="product-price">$299</div>
+                <button class="product-btn">Add to Cart</button>
+            </div>
+        </div>
+    </section>-->
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+               <a href = "/contact"> Contact </a>
+                <a href="/about">About</a>
+            </div>
+            <div class="footer-section">
+                <h3>Customer Service</h3>
+                <a href="/support">Support</a>
+                <a href="/shipping">Shipping</a>
+                <a href="/returns">Returns</a>
+            </div>
+            <div class="footer-section">
+                <h3>Legal</h3>
+                <a href="/privacy">Privacy</a>
+                <a href="/terms">Terms</a>
+                <a href="/cookies">Cookies</a>
+            </div>
+        </div>
+        <div class="copyright">
+            <p>&copy; 2026 E-Store. Made with ❤️ by Nandha | Chennai, India</p>
+        </div>
+    </footer>
+    <a id="shop-now" class="cta">Shop Now</a>
+
+<script>
+    document.getElementById('shop-now').addEventListener('click', function(e) {
+        e.preventDefault();
+        const isLoggedIn = localStorage.getItem('userToken');
+        window.location.href = isLoggedIn ? '/user-api/home' : '/login-api/login-form';
+    });
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ShopHub - E-Commerce Marketplace</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #232f3e;
+            --secondary-color: #f7f7f7;
+            --accent-color: #ff9900;
+            --success-color: #00a651;
+            --danger-color: #d13212;
+            --warning-color: #f7931e;
+            --info-color: #0073bb;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8f9fa;
+            line-height: 1.6;
+            color: #2c3e50;
+        }
+
+        /* Sticky Header */
+        header {
+            position: sticky;
+            top: 0;
+            background: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            z-index: 100;
+            padding: 1rem 0;
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 2rem;
+            gap: 2rem;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .search-bar {
+            flex: 1;
+            max-width: 500px;
+            position: relative;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 0.75rem 1rem 0.75rem 3rem;
+            border: 2px solid #e9ecef;
+            border-radius: 50px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: #fff;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(35, 47, 62, 0.1);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #6c757d;
+            font-size: 1.1rem;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
+        }
+
+        .header-link {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.25rem;
+            color: #6c757d;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-size: 0.875rem;
+            font-weight: 500;
+        }
+
+        .header-link:hover {
+            color: var(--primary-color);
+            transform: translateY(-2px);
+        }
+
+        .header-link i {
+            font-size: 1.25rem;
+        }
+
+        .cart-count {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: var(--accent-color);
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            font-size: 0.75rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+        }
+
+        /* Container */
+        .container-main {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        /* Content Header */
+        .content-header {
+            background: linear-gradient(135deg, var(--primary-color) 0%, #3a506b 100%);
+            color: white;
+            padding: 3rem 0;
+            margin: 2rem 0 3rem 0;
+            border-radius: 0 0 24px 24px;
+            text-align: center;
+        }
+
+        /* Section */
+        .section {
+            margin: 4rem 0;
+        }
+
+        .section-title {
+            font-size: 2.25rem;
+            font-weight: 700;
+            margin-bottom: 2.5rem;
+            text-align: center;
+            background: linear-gradient(135deg, white 0%, #f8f9ff 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Categories */
+        .categories-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        
+        .category-card:hover {
+            transform: translateY(-12px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+        }
+
+      
+
+        .category-card:hover .category-image {
+            transform: scale(1.08);
+        }
+
+		/* Categories */
+		.categories-grid {
+		    display: grid;
+		    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+		    gap: 1.5rem;
+		}
+
+		.category-card {
+		    background: white;
+		    border-radius: 12px;
+		    padding: 1.5rem;
+		    text-align: center;
+		    text-decoration: none;
+		    color: var(--primary-color);
+		    box-shadow: 0 4px 15px rgba(0,0,0,0.06);
+		    transition: all 0.3s ease;
+		    border: 1px solid #f1f3f4;
+		}
+
+		.category-card:hover {
+		    transform: translateY(-5px);
+		    box-shadow: 0 10px 25px rgba(0,0,0,0.12);
+		    background: var(--primary-color);
+		    color: white;
+		}
+
+		.category-name {
+		    font-size: 1.1rem;
+		    font-weight: 600;
+		    margin: 0;
+		}
+
+        .category-name {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin: 0;
+        }
+
+        /* Featured Products */
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .product-card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+            transition: all 0.4s ease;
+            border: 1px solid #f1f3f4;
+        }
+
+        .product-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.15);
+        }
+
+        .product-image {
+            width: 100%;
+            height: 240px;
+            object-fit: cover;
+        }
+
+        .product-info {
+            padding: 2rem;
+        }
+
+        .product-name {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            line-height: 1.4;
+            color: var(--primary-color);
+        }
+
+        .product-price {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--accent-color);
+            margin-bottom: 1.5rem;
+        }
+
+        .product-actions {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 0.875rem 1.25rem;
+            border: none;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            font-size: 0.95rem;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary-color) 0%, #3a506b 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(35, 47, 62, 0.3);
+        }
+
+        .btn-secondary {
+            background: white;
+            color: var(--primary-color);
+            border: 2px solid #e9ecef;
+        }
+
+        .btn-secondary:hover {
+            background: var(--primary-color);
+            color: white;
+            border-color: var(--primary-color);
+            transform: translateY(-2px);
+        }
+
+        /* Responsive */
+        @media (max-width: 992px) {
+            .header-container {
+                padding: 0 1.5rem;
+                flex-wrap: wrap;
+            }
+            .search-bar {
+                order: 3;
+                width: 100%;
+                max-width: none;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container-main {
+                padding: 0 1rem;
+            }
+            .categories-grid {
+                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+                gap: 1.5rem;
+            }
+            .products-grid {
+                grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+                gap: 1.5rem;
+            }
+            .product-actions {
+                flex-direction: column;
+            }
+            .content-header {
+                margin: 1rem 0 2rem 0;
+                padding: 2rem 0;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .products-grid {
+                grid-template-columns: 1fr;
+            }
+            .section-title {
+                font-size: 1.75rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Sticky Header -->
+    <header role="banner">
+        <div class="header-container">
+            <a href="/user-api/home" class="logo" aria-label="Home">
+                <i class="bi bi-shop-window"></i>
+                ShopHub
+            </a>
+            
+            <div class="search-bar" role="search">
+                <i class="bi bi-search search-icon"></i>
+                <input type="search" class="search-input" placeholder="Search products..." 
+                       aria-label="Search products">
+            </div>
+            
+            <nav class="header-actions" role="navigation" aria-label="Main navigation">
+                <a href="/cart-api/cart" class="header-link position-relative" aria-label="Shopping cart">
+                    <i class="bi bi-cart"></i>
+                    <span>Cart</span>
+                    
+                </a>
+                <a href="/user-api/dashboard" class="header-link" aria-label="Account">
+                    <i class="bi bi-person"></i>
+                    <span>Account</span>
+                </a>
+            </nav>
+        </div>
+    </header>
+
+    <main role="main">
+        <div class="container-main">
+            <!-- Content Header -->
+            <div class="content-header">
+                <h1 class="h2 mb-3 fw-bold">Welcome to ShopHub</h1>
+                <p class="mb-0 opacity-90 fs-5">Discover amazing products across all categories</p>
+            </div>
+
+            <!-- Categories Section -->
+            <section class="section" aria-labelledby="categories-title">
+                <h2 id="categories-title" class="section-title">Shop by Category</h2>
+                <div class="categories-grid">
+					<a th:each="category : ${categories}"  
+					   th:href="@{/user-api/category/{id}(id=${category.categoryId})}" 
+					   class="category-card"
+					   th:attr="aria-label=|Browse ${category.categoryName} category|">
+
+					    <i class="bi bi-grid fs-2 mb-2"></i>
+					    <h3 class="category-name" th:text="${category.categoryName}">Category</h3>
+
+					</a>
+                </div>
+            </section>
+
+            <!-- Featured Products -->
+            <section class="section" aria-labelledby="featured-title">
+                <h2 id="featured-title" class="section-title">Featured Products</h2>
+                <div class="products-grid">
+					<article th:each="product : ${products}" class="product-card">
+
+					    <img th:if="${product.image != null}"
+					         th:src="@{${product.image.productImgUrl}}"
+					         th:alt="${product.productName}"
+					         class="product-image"
+					         loading="lazy">
+
+					    <div class="product-info">
+					        <h3 class="product-name" th:text="${product.productName}">Product Name</h3>
+
+					        <div class="product-price"
+					             th:text="${#numbers.formatDecimal(product.price, 1, 2)}">
+					            $0.00
+					        </div>
+
+					        <div class="product-actions">
+					            <form th:action="@{/cart-api/add-cart/{id}(id=${product.productId})}" method="post">
+					                <input type="hidden" name="q" value="1" />
+					                <button type="submit" class="btn btn-primary">
+					                    <i class="bi bi-cart-plus"></i> Add to Cart
+					                </button>
+					            </form>
+
+					            <a th:href="@{/order-api/buy-now/{id}(id=${product.productId})}" 
+					               class="btn btn-secondary">
+					                <i class="bi bi-lightning-charge"></i>
+					                Buy Now
+					            </a>
+					        </div>
+					    </div>
+
+					</article>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

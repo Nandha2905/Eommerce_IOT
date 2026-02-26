@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Manage Addresses</title>
+  <style>
+    body {
+        font-family: 'Segoe UI', sans-serif;
+        background: #f4f6f8;
+        margin: 0;
+        padding: 30px;
+    }
+
+    .container {
+        max-width: 1000px;
+        margin: auto;
+    }
+
+    .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 25px;
+    }
+
+    h1 {
+        margin: 0;
+        color: #333;
+    }
+
+    .btn {
+        padding: 8px 14px;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 14px;
+        text-decoration: none;
+    }
+
+    .btn-primary {
+        background: #3498db;
+        color: white;
+    }
+
+    .btn-edit {
+        background: #2ecc71;
+        color: white;
+    }
+
+    .btn-delete {
+        background: #e74c3c;
+        color: white;
+    }
+
+    .card {
+        background: white;
+        padding: 20px;
+        border-radius: 8px;
+        margin-bottom: 20px;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    }
+
+    .card p {
+        margin: 5px 0;
+        color: #555;
+    }
+
+    .actions {
+        margin-top: 10px;
+    }
+
+    input {
+        padding: 6px;
+        margin: 4px 0;
+        width: 100%;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+    }
+
+    .edit-form {
+        margin-top: 15px;
+        background: #f9f9f9;
+        padding: 10px;
+        border-radius: 6px;
+    }
+    .card:hover {
+    transform: translateY(-4px);
+    transition: 0.3s;
+}
+</style>
+</head>
+<body>
+   <div class="container">
+
+    <div class="header">
+        <h1>Manage Your Addresses</h1>
+        <a th:href="@{/user-api/dashboard}" class="btn btn-primary">
+            Back to Dashboard
+        </a>
+    </div>
+
+    <!-- Empty State -->
+    <div th:if="${#lists.isEmpty(address)}" class="card">
+        <p>No saved addresses yet.</p>
+    </div>
+
+    <!-- Address Cards -->
+    <div th:each="addr : ${address}" class="card">
+
+        <div class="address-view">
+            <p><strong>Street:</strong> <span th:text="${addr.street}"></span></p>
+            <p><strong>City:</strong> <span th:text="${addr.city}"></span></p>
+            <p><strong>State:</strong> <span th:text="${addr.state}"></span></p>
+            <p><strong>Pincode:</strong> <span th:text="${addr.pincode}"></span></p>
+
+            <div class="actions">
+                <button type="button"
+                        class="btn btn-edit"
+                        onclick="toggleEdit(this)">
+                    Edit
+                </button>
+
+               
+            </div>
+        </div>
+
+        <!-- Hidden Edit Form -->
+        <form th:action="@{/user-address-api/manage-user-address}"
+              method="post"
+              class="edit-form"
+              style="display:none;">
+
+            <input type="hidden" name="addressId"
+                   th:value="${addr.addressId}">
+
+            <input type="text" name="street"
+                   th:value="${addr.street}" required>
+
+            <input type="text" name="city"
+                   th:value="${addr.city}" required>
+
+            <input type="text" name="state"
+                   th:value="${addr.state}" required>
+
+            <input type="text" name="pincode"
+                   th:value="${addr.pincode}" required>
+
+            <button type="submit" class="btn btn-edit">
+                Save Changes
+            </button>
+
+            <button type="button"
+                    class="btn btn-primary"
+                    onclick="toggleEdit(this)">
+                Cancel
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
+</body>
+<script>
+    function toggleEdit(button) {
+        const card = button.closest(".card");
+        const form = card.querySelector(".edit-form");
+        const view = card.querySelector(".address-view");
+
+        if (form.style.display === "none") {
+            form.style.display = "block";
+            view.style.display = "none";
+        } else {
+            form.style.display = "none";
+            view.style.display = "block";
+        }
+    }
+</script>
+</html>
