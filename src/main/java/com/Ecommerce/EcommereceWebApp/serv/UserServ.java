@@ -75,5 +75,8 @@ public class UserServ {
 	        customer.setActive(!customer.isActive());
 	        userRepo.save(customer);
 	    }
-	
+
+	public boolean existsByEmail(String email) {
+		return userRepo.existsByEmail(email);
+	}
 }
