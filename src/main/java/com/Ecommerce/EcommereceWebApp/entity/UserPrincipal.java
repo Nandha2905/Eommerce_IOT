@@ -1,12 +1,15 @@
 package com.Ecommerce.EcommereceWebApp.entity;
 
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-public class UserPrincipal implements UserDetails {
+public class UserPrincipal implements UserDetails , Serializable {
 
     private Users user;
 
@@ -16,8 +19,7 @@ public class UserPrincipal implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Collections.emptyList(); 
-        // Later you can add ROLE_USER / ROLE_ADMIN
+        return List.of(new SimpleGrantedAuthority("ROLE_" + user.getRole()));
     }
 
     @Override
