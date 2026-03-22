@@ -2,14 +2,13 @@ package com.Ecommerce.EcommereceWebApp.entity;
 
 import java.io.Serializable;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-public class UserPrincipal implements UserDetails , Serializable {
+public class UserPrincipal implements UserDetails, Serializable {
 
     private Users user;
 
@@ -24,12 +23,12 @@ public class UserPrincipal implements UserDetails , Serializable {
 
     @Override
     public String getPassword() {
-        return user.getPassword();   // must return real password
+        return user.getPassword();
     }
 
     @Override
     public String getUsername() {
-        return user.getEmail();   // using email as username
+        return user.getEmail();
     }
 
     @Override
@@ -49,6 +48,6 @@ public class UserPrincipal implements UserDetails , Serializable {
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return user.isActive(); // ✅ FIXED: inactive sellers are blocked at login
     }
 }
