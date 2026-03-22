@@ -130,10 +130,18 @@ public class SellerController {
 	    return "redirect:/seller-api/manage-seller-products";
 	}
 	@GetMapping("/toggle-product/{id}")
-	public String toggleProd(@PathVariable Long id, Principal pri) {
+	public String toggleProd(@PathVariable Long id, Principal pri,RedirectAttributes ra) {
+		try {
 	    Product product = prodSrv.getProductById(id);
 	    Users seller = userRepo.findByEmail(pri.getName()).orElseThrow(() -> new RuntimeException("user not found"));
 	    prodSrv.toggleProduct(id, seller, !product.isActive());
+	    ra.addFlashAttribute("msg", 
+	            "Product " + (product.isActive() ? "activated" : "deactivated") + " successfully!");
+		}
+		catch(Exception e)
+		{
+			 ra.addFlashAttribute("error",e.getMessage());
+		}
 	    return "redirect:/seller-api/manage-seller-products";
 	}
 	

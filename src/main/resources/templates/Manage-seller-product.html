@@ -355,7 +355,8 @@
             Add Product
         </a>
     </div>
-
+	<div th:if="${msg}" class="alert alert-success" th:text="${msg}"></div>
+	<div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
     <!-- PRODUCT GRID -->
     <div class="row g-4" th:if="${!#lists.isEmpty(productList)}">
 

@@ -92,21 +92,6 @@ public class OrderController {
 
 	    return "redirect:/order-api/success";
 	}
-	@GetMapping("/checkout")
-	public String checkoutCart(Principal pri, Model model) {
-	    Users user = userRepo.findByEmail(pri.getName())
-	                 .orElseThrow(() -> new RuntimeException("User not found"));
-
-	    Cart cart = cartRepo.findByUser(user);
-
-	    model.addAttribute("orderType", "CART");
-	    model.addAttribute("cartItems", cart.getCart_items());
-	    model.addAttribute("cartTotal", cart.getTotal_amount());
-	    model.addAttribute("user", user);
-	    model.addAttribute("defaultAddress", user.getUsersAddress());
-
-	    return "Order"; 
-	   }
 	@GetMapping("/success")
 	public String successs(Principal pri,Model model)
 	{
@@ -133,5 +118,21 @@ public class OrderController {
 		model.addAttribute("order",orderId);
 		return "order-item";
 	}
+
+	@GetMapping("/checkout")
+	public String checkoutCart(Principal pri, Model model) {
+	    Users user = userRepo.findByEmail(pri.getName())
+	                 .orElseThrow(() -> new RuntimeException("User not found"));
+	
+	    Cart cart = cartRepo.findByUser(user);
+	
+	    model.addAttribute("orderType", "CART");
+	    model.addAttribute("cartItems", cart.getCart_items());
+	    model.addAttribute("cartTotal", cart.getTotal_amount());
+	    model.addAttribute("user", user);
+	    model.addAttribute("defaultAddress", user.getUsersAddress());
+	
+	    return "Order"; 
+	   }
 	
 }
